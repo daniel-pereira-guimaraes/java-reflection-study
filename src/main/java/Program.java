@@ -3,10 +3,11 @@ import java.util.Map;
 
 public class Program {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException {
 		classOfObject();
 		classOfClass();
 		classOfPrimitive();
+		classByName();
 	}
 	
 	private static void classOfObject() {
@@ -28,7 +29,7 @@ public class Program {
 	}
 	
 	private static void classOfClass() {
-		System.out.println(Program.class.getSimpleName() + ".classOfObject()");
+		System.out.println(Program.class.getSimpleName() + ".classOfClass()");
 
 		Class<?> strClass = String.class;
 		Class<?> doubleClass = Double.class;
@@ -41,7 +42,7 @@ public class Program {
 	}
 	
 	private static void classOfPrimitive() {
-		System.out.println(Program.class.getSimpleName() + ".classOfObject()");
+		System.out.println(Program.class.getSimpleName() + ".classOfPrimitive()");
 
 		Class<?> intClass = int.class;
 		Class<?> doubleClass = double.class;
@@ -51,6 +52,12 @@ public class Program {
 		System.out.println("\tdoubleClass:\t" + doubleClass);
 		System.out.println("\tbooleanClass:\t" + booleanClass);
 		System.out.println();
+	}
+	
+	private static void classByName() throws ClassNotFoundException {
+		System.out.println(Program.class.getSimpleName() + ".classByName()");
+		Class<?> strClass = Class.forName("java.lang.String");
+		System.out.println("\tstrClass:\t" + strClass);
 	}
 
 }
