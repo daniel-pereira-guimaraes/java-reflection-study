@@ -4,9 +4,9 @@ import java.util.Map;
 public class Program {
 	
 	public static void main(String[] args) {
-		
 		classOfObject();
 		classOfClass();
+		classOfPrimitive();
 	}
 	
 	private static void classOfObject() {
@@ -35,8 +35,21 @@ public class Program {
 		Class<?> mapClass = Map.class;
 
 		System.out.println("\tstrClass:\t" + strClass);
-		System.out.println("\tvalueClass:\t" + doubleClass);
+		System.out.println("\tdoubleClass:\t" + doubleClass);
 		System.out.println("\tmapClass:\t" + mapClass);
+		System.out.println();
+	}
+	
+	private static void classOfPrimitive() {
+		System.out.println(Program.class.getSimpleName() + ".classOfObject()");
+
+		Class<?> intClass = int.class;
+		Class<?> doubleClass = double.class;
+		Class<?> booleanClass = boolean.class;
+
+		System.out.println("\tintClass:\t" + intClass);
+		System.out.println("\tdoubleClass:\t" + doubleClass);
+		System.out.println("\tbooleanClass:\t" + booleanClass);
 		System.out.println();
 	}
 
