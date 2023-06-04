@@ -6,7 +6,7 @@ public class Program {
 	public static void main(String[] args) {
 		
 		classOfObject();
-		
+		classOfClass();
 	}
 	
 	private static void classOfObject() {
@@ -24,6 +24,20 @@ public class Program {
 		System.out.println("\tstrClass:\t" + strClass);
 		System.out.println("\tvalueClass:\t" + valueClass);
 		System.out.println("\tmapClass:\t" + mapClass);
+		System.out.println();
+	}
+	
+	private static void classOfClass() {
+		System.out.println(Program.class.getSimpleName() + ".classOfObject()");
+
+		Class<?> strClass = String.class;
+		Class<?> doubleClass = Double.class;
+		Class<?> mapClass = Map.class;
+
+		System.out.println("\tstrClass:\t" + strClass);
+		System.out.println("\tvalueClass:\t" + doubleClass);
+		System.out.println("\tmapClass:\t" + mapClass);
+		System.out.println();
 	}
 
 }
