@@ -23,7 +23,7 @@ public class Program {
 		classByName();
 		innerClassByName();
 		checkClassFound();
-		printClassInfo(String.class, int.class, int[].class, Collection.class, Program.Person.class, Color.class);
+		printClassInfo();
 	}
 	
 	private static void classOfObject() {
@@ -102,7 +102,14 @@ public class Program {
 	private static void printClassInfo(Class<?>... classes) {
 		System.out.println(Program.class.getSimpleName() + ".printClassInfo()");
 		for (Class<?> clazz : classes) {
-			System.out.println("\t" + clazz.getSimpleName());
+			
+			if (clazz.isAnonymousClass()) {
+				System.out.println("\t<Anonymous>");
+			} 
+			else {
+				System.out.println("\t" + clazz.getSimpleName());
+			}
+			
 			System.out.println("\t\tIs array: " + clazz.isArray());
 			System.out.println("\t\tIs primitive: " + clazz.isPrimitive());
 			System.out.println("\t\tIs enum: " + clazz.isEnum());
@@ -125,5 +132,21 @@ public class Program {
 			}
 			System.out.println();
 		}
+	}
+	
+	private static void printClassInfo() {
+		
+		Serializable instanceOfAnonymousClass = new Serializable() {
+			private static final long serialVersionUID = 1L;
+		};
+		
+		printClassInfo(
+			String.class, 
+			int.class, 
+			int[].class, 
+			Collection.class, 
+			Program.Person.class, 
+			Color.class,
+			instanceOfAnonymousClass.getClass());
 	}
 }
