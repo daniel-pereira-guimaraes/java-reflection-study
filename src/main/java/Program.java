@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Program {
@@ -24,6 +25,7 @@ public class Program {
 		innerClassByName();
 		checkClassFound();
 		printClassInfo();
+		testClassAnalyzer();
 	}
 	
 	private static void classOfObject() {
@@ -110,6 +112,7 @@ public class Program {
 				System.out.println("\t" + clazz.getSimpleName());
 			}
 			
+			System.out.println("\t\tType name: " + clazz.getTypeName());
 			System.out.println("\t\tIs array: " + clazz.isArray());
 			System.out.println("\t\tIs primitive: " + clazz.isPrimitive());
 			System.out.println("\t\tIs enum: " + clazz.isEnum());
@@ -148,5 +151,40 @@ public class Program {
 			Program.Person.class, 
 			Color.class,
 			instanceOfAnonymousClass.getClass());
+	}
+	
+	private static void testClassAnalyzer(Class<?> clazz)	{
+		final PopupTypeInfo info = ClassAnalyzer.createPopupTypeInfoFromClass(clazz);
+		System.out.println("This is a " + (info.isJdk() ? "JDK" : "custom") + " type");
+		System.out.println("Name: " + info.getName());
+		
+		System.out.print("Type: ");
+		if (info.isPrimitive())
+			System.out.println("Primitive");
+		else if (info.isInterface())
+			System.out.println("Interface");
+		else if (info.isEnum())
+			System.out.println("Enum");
+		else if (info.isArray())
+			System.out.println("Array");
+		else
+			System.out.println("Class");
+		
+		if (!info.isPrimitive()) {
+			System.out.print("Inherits from: ");
+			for (int i = 0; i < info.getInheritedClassNames().size(); i++) {
+				if (i > 0) {
+					System.out.print(", ");
+				}
+				System.out.println(info.getInheritedClassNames().get(i));
+			}
+		}
+		System.out.println();
+	}
+	
+	private static void testClassAnalyzer() {
+		testClassAnalyzer(List.class);
+		testClassAnalyzer(Product.class);
+		testClassAnalyzer(int.class);
 	}
 }
