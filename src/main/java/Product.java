@@ -67,5 +67,10 @@ public class Product {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", price=" + price + ", active=" + active + "]";
+	}
 	
 }

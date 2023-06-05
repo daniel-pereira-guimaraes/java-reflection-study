@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,7 +24,9 @@ public class Program {
 		BLUE
 	}
 	
-	public static void main(String[] args) throws ClassNotFoundException {
+	public static void main(String[] args) 
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, 
+				IllegalArgumentException, InvocationTargetException {
 		classOfObject();
 		classOfClass();
 		classOfPrimitive();
@@ -35,6 +38,7 @@ public class Program {
 		printAllInterfaces();
 		printConstructors(String.class);
 		printConstructorsParamTypes(Product.class);
+		createInstanceWithArgs();
 	}
 	
 	private static void classOfObject() {
@@ -197,7 +201,7 @@ public class Program {
 		testClassAnalyzer(int.class);
 	}
 	
-    public static Set<Class<?>> findAllImplementedInterfaces(Class<?> input) {
+	private static Set<Class<?>> findAllImplementedInterfaces(Class<?> input) {
         Set<Class<?>> allImplementedInterfaces = new HashSet<>();
         
         Class<?>[] inputInterfaces = input.getInterfaces();
@@ -209,7 +213,7 @@ public class Program {
         return allImplementedInterfaces;
     }
     
-    public static void printAllInterfaces(Class<?> clazz) {
+    private static void printAllInterfaces(Class<?> clazz) {
     	System.out.println("\nprintAllInterfaces");
     	System.out.println("\tClass name: " + clazz.getSimpleName());
     	System.out.println("\t\tInterfaces:");
@@ -219,12 +223,12 @@ public class Program {
     	}
     }
     
-    public static void printAllInterfaces() {
+    private static void printAllInterfaces() {
     	printAllInterfaces(Double.class);
     	printAllInterfaces(String.class);
     }
     
-    public static void printConstructors(Class<?> clazz) {
+    private static void printConstructors(Class<?> clazz) {
     	System.out.println("\nprintConstructors");
     	for (Constructor<?> c : clazz.getDeclaredConstructors()) {
     		System.out.println("\t" + c.getName());
@@ -238,7 +242,7 @@ public class Program {
     	}
     }
     
-    public static void printConstructorsParamTypes(Class<?> clazz) {
+    private static void printConstructorsParamTypes(Class<?> clazz) {
     	System.out.println("\nprintConstructorsParamTypes");
     	for (Constructor<?> c : clazz.getDeclaredConstructors()) {
     		final List<String> paramTypes = Arrays.asList(c.getParameterTypes())
@@ -247,5 +251,36 @@ public class Program {
     		System.out.println("\t" + paramTypes);
     	}
     }
+    
+    private static Object createInstanceWithArgs(Class<?> clazz, Object... args) 
+    		throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    	System.out.println("\tcreateInstanceWithArgs(" + clazz.getSimpleName() + ".class, " + Arrays.asList(args) + ")");
+    	Object obj = null;
+    	for (Constructor<?> c : clazz.getDeclaredConstructors()) {
+    		if (c.getParameterCount() == args.length) {
+    			obj = c.newInstance(args);
+    		}
+    	}
+    	return obj;
+    }
+    
+    private static void createInstanceWithArgs() 
+    		throws InstantiationException, IllegalAccessException, 
+    			IllegalArgumentException, InvocationTargetException {
+    	
+    	System.out.println("\ncreateInstanceWithArgs");
+    	
+    	final Product p1 = (Product)createInstanceWithArgs(Product.class);
+    	final Product p2 = (Product)createInstanceWithArgs(Product.class, "Keyboard");
+    	final Product p3 = (Product)createInstanceWithArgs(Product.class, 200L,  "Keyboard");
+
+    	System.out.println();
+    	System.out.println("\t" + p1);
+    	System.out.println("\t" + p2);
+    	System.out.println("\t" + p3);
+    }
+    
+    
+    
 	
 }
