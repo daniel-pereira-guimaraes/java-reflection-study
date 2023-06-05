@@ -13,6 +13,7 @@ public class Program {
 		classOfPrimitive();
 		classByName();
 		innerClassByName();
+		checkClassFound();
 	}
 	
 	private static void classOfObject() {
@@ -69,13 +70,23 @@ public class Program {
 	}
 	
 	private static void innerClassByName() throws ClassNotFoundException {
-		System.out.println(Program.class.getSimpleName() + ".classByName()");
+		System.out.println(Program.class.getSimpleName() + ".innerClassByName()");
 		
 		Class<?> personClass = Class.forName("Program$Person");
 		
 		System.out.println("\tpersonClass:\t" + personClass);
 		System.out.println();
-		
+	}
+	
+	private static void checkClassFound() {
+		System.out.println(Program.class.getSimpleName() + ".checkClassFound()");
+		try {
+			Class.forName("com.google.gson.Gson");
+			System.out.println("\tGson class found!");
+		} catch (ClassNotFoundException e) {
+			System.out.println("\tGson class not found!");
+		}
+		System.out.println();
 	}
 	
 }

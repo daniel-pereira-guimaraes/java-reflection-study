@@ -9,4 +9,14 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 
+	<dependencies>
+		
+		<!-- Gson dependency added only for test of Class.forName(..) -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.10</version>
+		</dependency>
+
+	</dependencies>
 </project>
