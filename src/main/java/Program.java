@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Parameter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +31,7 @@ public class Program {
 		printClassInfo();
 		testClassAnalyzer();
 		printAllInterfaces();
+		printConstructors(String.class);
 	}
 	
 	private static void classOfObject() {
@@ -216,6 +219,20 @@ public class Program {
     public static void printAllInterfaces() {
     	printAllInterfaces(Double.class);
     	printAllInterfaces(String.class);
+    }
+    
+    public static void printConstructors(Class<?> clazz) {
+    	System.out.println("\nprintConstructors");
+    	for (Constructor<?> c : clazz.getDeclaredConstructors()) {
+    		System.out.println("\t" + c.getName());
+    		System.out.println("\t\ttoString: " + c.toString());
+    		System.out.println("\t\tModifiers: " + c.getModifiers());
+    		System.out.println("\t\tParameterCount: " + c.getParameterCount());
+    		for (Parameter p : c.getParameters()) {
+    			System.out.println("\t\t\tName: " + p.getName());
+    			System.out.println("\t\t\tType: " + p.getType().getSimpleName());
+    		}
+    	}
     }
 	
 }
