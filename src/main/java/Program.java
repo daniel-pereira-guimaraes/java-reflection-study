@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public class Program {
 		classByName();
 		innerClassByName();
 		checkClassFound();
-		printClassInfo(String.class, Double.class, Program.class, Program.Person.class, Color.class);
+		printClassInfo(String.class, int.class, int[].class, Collection.class, Program.Person.class, Color.class);
 	}
 	
 	private static void classOfObject() {
@@ -101,8 +102,16 @@ public class Program {
 	private static void printClassInfo(Class<?>... classes) {
 		System.out.println(Program.class.getSimpleName() + ".printClassInfo()");
 		for (Class<?> clazz : classes) {
-			System.out.println("\t" + clazz.getName());
-			System.out.println("\t\tSuper class: " + clazz.getSuperclass().getName());
+			System.out.println("\t" + clazz.getSimpleName());
+			System.out.println("\t\tIs array: " + clazz.isArray());
+			System.out.println("\t\tIs primitive: " + clazz.isPrimitive());
+			System.out.println("\t\tIs enum: " + clazz.isEnum());
+			System.out.println("\t\tIs interface: " + clazz.isInterface());
+			System.out.println("\t\tIs anonymous: " + clazz.isAnonymousClass());
+
+			if (clazz.getSuperclass() != null) {
+				System.out.println("\t\tSuper class: " + clazz.getSuperclass().getName());
+			}
 			
 			if (clazz.getPackage() != null) {
 				System.out.println("\t\tPackage: " + clazz.getPackage().getName());
