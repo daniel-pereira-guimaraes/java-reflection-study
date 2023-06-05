@@ -1,8 +1,10 @@
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Program {
 
@@ -26,6 +28,7 @@ public class Program {
 		checkClassFound();
 		printClassInfo();
 		testClassAnalyzer();
+		printAllInterfaces();
 	}
 	
 	private static void classOfObject() {
@@ -187,4 +190,32 @@ public class Program {
 		testClassAnalyzer(Product.class);
 		testClassAnalyzer(int.class);
 	}
+	
+    public static Set<Class<?>> findAllImplementedInterfaces(Class<?> input) {
+        Set<Class<?>> allImplementedInterfaces = new HashSet<>();
+        
+        Class<?>[] inputInterfaces = input.getInterfaces();
+        for (Class<?> currentInterface : inputInterfaces) {
+            allImplementedInterfaces.add(currentInterface);
+            allImplementedInterfaces.addAll(findAllImplementedInterfaces(currentInterface));
+        }
+        
+        return allImplementedInterfaces;
+    }
+    
+    public static void printAllInterfaces(Class<?> clazz) {
+    	System.out.println("\nprintAllInterfaces");
+    	System.out.println("\tClass name: " + clazz.getSimpleName());
+    	System.out.println("\t\tInterfaces:");
+    	Set<Class<?>> interfaces = findAllImplementedInterfaces(clazz);
+    	for (Class<?> currentInterface : interfaces) {
+    		System.out.println("\t\t\t" + currentInterface.getSimpleName());
+    	}
+    }
+    
+    public static void printAllInterfaces() {
+    	printAllInterfaces(Double.class);
+    	printAllInterfaces(String.class);
+    }
+	
 }
