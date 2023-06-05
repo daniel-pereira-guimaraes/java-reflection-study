@@ -1,10 +1,18 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Program {
-	
-	static class Person {
+
+	public static class Person implements Serializable {
+		private static final long serialVersionUID = 1L;
 		String name;
+	}
+	
+	public static enum Color {
+		RED,
+		GREEN,
+		BLUE
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException {
@@ -14,6 +22,7 @@ public class Program {
 		classByName();
 		innerClassByName();
 		checkClassFound();
+		printClassInfo(String.class, Double.class, Program.class, Program.Person.class, Color.class);
 	}
 	
 	private static void classOfObject() {
@@ -88,5 +97,24 @@ public class Program {
 		}
 		System.out.println();
 	}
-	
+
+	private static void printClassInfo(Class<?>... classes) {
+		System.out.println(Program.class.getSimpleName() + ".printClassInfo()");
+		for (Class<?> clazz : classes) {
+			System.out.println("\t" + clazz.getName());
+			System.out.println("\t\tSuper class: " + clazz.getSuperclass().getName());
+			
+			if (clazz.getPackage() != null) {
+				System.out.println("\t\tPackage: " + clazz.getPackage().getName());
+			}
+			
+			if (clazz.getInterfaces().length > 0) {
+				System.out.println("\t\tImplemented interfaces:");
+				for (Class<?> implementedInterface : clazz.getInterfaces()) {
+					System.out.println("\t\t\t" + implementedInterface.getName());
+				}
+			}
+			System.out.println();
+		}
+	}
 }
