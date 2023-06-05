@@ -1,12 +1,14 @@
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Program {
 
@@ -32,6 +34,7 @@ public class Program {
 		testClassAnalyzer();
 		printAllInterfaces();
 		printConstructors(String.class);
+		printConstructorsParamTypes(Product.class);
 	}
 	
 	private static void classOfObject() {
@@ -232,6 +235,16 @@ public class Program {
     			System.out.println("\t\t\tName: " + p.getName());
     			System.out.println("\t\t\tType: " + p.getType().getSimpleName());
     		}
+    	}
+    }
+    
+    public static void printConstructorsParamTypes(Class<?> clazz) {
+    	System.out.println("\nprintConstructorsParamTypes");
+    	for (Constructor<?> c : clazz.getDeclaredConstructors()) {
+    		final List<String> paramTypes = Arrays.asList(c.getParameterTypes())
+    				.stream().map(paramType -> paramType.getSimpleName())
+    				.collect(Collectors.toList());
+    		System.out.println("\t" + paramTypes);
     	}
     }
 	
