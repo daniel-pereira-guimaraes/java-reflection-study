@@ -39,6 +39,7 @@ public class Program {
 		printConstructors(String.class);
 		printConstructorsParamTypes(Product.class);
 		createInstanceWithArgs();
+		createNewInstance();
 	}
 	
 	private static void classOfObject() {
@@ -280,6 +281,11 @@ public class Program {
     	System.out.println("\t" + p3);
     }
     
+    private static void createNewInstance() throws InstantiationException, IllegalAccessException {
+    	System.out.println("\ncreateNewInstance");
+    	final Product p = Product.class.newInstance();
+    	System.out.println("\t" + p);
+    }
     
     
 	
