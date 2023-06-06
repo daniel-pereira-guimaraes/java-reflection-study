@@ -26,7 +26,8 @@ public class Program {
 	
 	public static void main(String[] args) 
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException, 
-				IllegalArgumentException, InvocationTargetException {
+				IllegalArgumentException, InvocationTargetException, NoSuchMethodException, 
+				SecurityException {
 		classOfObject();
 		classOfClass();
 		classOfPrimitive();
@@ -38,8 +39,8 @@ public class Program {
 		printAllInterfaces();
 		printConstructors(String.class);
 		printConstructorsParamTypes(Product.class);
-		createInstanceWithArgs();
 		createNewInstance();
+		createInstanceWithArgs();
 	}
 	
 	private static void classOfObject() {
@@ -79,7 +80,6 @@ public class Program {
 		Class<?> intClass = int.class;
 		Class<?> doubleClass = double.class;
 		Class<?> booleanClass = boolean.class;
-
 		System.out.println("\tintClass:\t" + intClass);
 		System.out.println("\tdoubleClass:\t" + doubleClass);
 		System.out.println("\tbooleanClass:\t" + booleanClass);
@@ -252,41 +252,40 @@ public class Program {
     		System.out.println("\t" + paramTypes);
     	}
     }
-    
-    private static Object createInstanceWithArgs(Class<?> clazz, Object... args) 
-    		throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-    	System.out.println("\tcreateInstanceWithArgs(" + clazz.getSimpleName() + ".class, " + Arrays.asList(args) + ")");
-    	Object obj = null;
-    	for (Constructor<?> c : clazz.getDeclaredConstructors()) {
-    		if (c.getParameterCount() == args.length) {
-    			obj = c.newInstance(args);
-    		}
-    	}
-    	return obj;
-    }
-    
-    private static void createInstanceWithArgs() 
-    		throws InstantiationException, IllegalAccessException, 
-    			IllegalArgumentException, InvocationTargetException {
-    	
-    	System.out.println("\ncreateInstanceWithArgs");
-    	
-    	final Product p1 = (Product)createInstanceWithArgs(Product.class);
-    	final Product p2 = (Product)createInstanceWithArgs(Product.class, "Keyboard");
-    	final Product p3 = (Product)createInstanceWithArgs(Product.class, 200L,  "Keyboard");
 
-    	System.out.println();
-    	System.out.println("\t" + p1);
-    	System.out.println("\t" + p2);
-    	System.out.println("\t" + p3);
-    }
-    
     private static void createNewInstance() throws InstantiationException, IllegalAccessException {
     	System.out.println("\ncreateNewInstance");
     	final Product p = Product.class.newInstance();
     	System.out.println("\t" + p);
     }
     
-    
+	@SuppressWarnings("unchecked")
+	private static <T> T createInstanceWithArgs(Class<T> clazz, Object... args) 
+    		throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    	System.out.println("\tcreateInstanceWithArgs(" + clazz.getSimpleName() + ".class, " + Arrays.asList(args) + ")");
+    	for (Constructor<?> c : clazz.getDeclaredConstructors()) {
+    		if (c.getParameterCount() == args.length) {
+    			return (T) c.newInstance(args);
+    		}
+    	}
+    	System.out.println("An appropriate constructor was not found.");
+    	return null;
+    }
+
+    private static void createInstanceWithArgs() 
+    		throws InstantiationException, IllegalAccessException, 
+    			IllegalArgumentException, InvocationTargetException {
+    	
+    	System.out.println("\ncreateInstanceWithArgs");
+    	
+    	final Product p1 = createInstanceWithArgs(Product.class);
+    	final Product p2 = createInstanceWithArgs(Product.class, "Keyboard");
+    	final Product p3 = createInstanceWithArgs(Product.class, 200L,  "Keyboard");
+
+    	System.out.println();
+    	System.out.println("\t" + p1);
+    	System.out.println("\t" + p2);
+    	System.out.println("\t" + p3);
+    }
 	
 }
