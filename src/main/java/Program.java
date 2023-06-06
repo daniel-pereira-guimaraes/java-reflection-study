@@ -41,6 +41,7 @@ public class Program {
 		printConstructorsParamTypes(Product.class);
 		createNewInstance();
 		createInstanceWithArgs();
+		usePrivateConstructor();
 	}
 	
 	private static void classOfObject() {
@@ -286,6 +287,23 @@ public class Program {
     	System.out.println("\t" + p1);
     	System.out.println("\t" + p2);
     	System.out.println("\t" + p3);
+    }
+    
+    private static void usePrivateConstructor() 
+    		throws NoSuchMethodException, SecurityException, InstantiationException, 
+    			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    	System.out.println("\nusePrivateConstructor");
+
+    	// Default
+    	final Database defaultDatabase = Database.getInstante();
+    	System.out.println("\tDefault: " + defaultDatabase);
+    	
+    	// Custom
+    	final Constructor<Database> constructor = 
+    			Database.class.getDeclaredConstructor(String.class, int.class, String.class, String.class);
+    	constructor.setAccessible(true);
+    	final Database customDatabase = constructor.newInstance("myserver.com", 12345, "myUser", "myPassword");
+    	System.out.println("\tCustom: " + customDatabase);
     }
 	
 }
