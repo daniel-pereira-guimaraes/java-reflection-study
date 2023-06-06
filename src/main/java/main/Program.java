@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import dao.Database;
+import model.Product;
+
 public class Program {
 
 	public static class Person implements Serializable {
