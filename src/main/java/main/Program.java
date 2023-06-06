@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ public class Program {
 		createInstanceWithArgs();
 		createInstanceWithArgsV2();
 		usePrivateConstructor();
+		testGetArrayClass();
 	}
 	
 	private static void classOfObject() {
@@ -322,6 +324,44 @@ public class Program {
     	constructor.setAccessible(true);
     	final Database customDatabase = constructor.newInstance("myserver.com", 12345, "myUser", "myPassword");
     	System.out.println("\tCustom: " + customDatabase);
+    }
+    
+    private static Class<?> getArrayClass(Class<?> componentType) throws Throwable {
+        String name;
+        if(componentType.isArray())
+            name = "["+componentType.getName();		// Just add a leading "["
+        else if(componentType == boolean.class)
+            name = "[Z";
+        else if(componentType == byte.class)
+            name = "[B";
+        else if(componentType == char.class)
+            name = "[C";
+        else if(componentType == double.class)
+            name = "[D";
+        else if(componentType == float.class)
+            name = "[F";
+        else if(componentType == int.class)
+            name = "[I";
+        else if(componentType == long.class)
+            name = "[J";
+        else if(componentType == short.class)
+            name = "[S";
+        else {
+            name = "[L"+componentType.getName()+";";	// must be an object non-array class
+        }
+
+        return Class.forName(name);
+    }
+    
+    private static void testGetArrayClass() throws Throwable {
+    	System.out.println("\ntestGetArrayClass");
+    	System.out.println("\t" + getArrayClass(byte.class).getTypeName()); 
+    	System.out.println("\t" + getArrayClass(int.class).getTypeName()); 
+    	System.out.println("\t" + getArrayClass(long.class).getTypeName()); 
+    	System.out.println("\t" + getArrayClass(double.class).getTypeName()); 
+    	System.out.println("\t" + getArrayClass(String.class).getTypeName()); 
+    	System.out.println("\t" + getArrayClass(Product.class).getTypeName()); 
+    	System.out.println("\t" + getArrayClass(Object.class).getTypeName()); 
     }
 	
 }

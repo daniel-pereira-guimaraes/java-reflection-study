@@ -26,15 +26,14 @@ public class Database {
 	
 	private static Database instance;
 	private final DatabaseConfig config;
-	
+
 	private Database(String server, int port, String user, String password) {
-		super();
 		this.config = new DatabaseConfig(server, port, user, password);
 	}
 	
 	public static Database getInstante() {
 		if (instance == null) {
-			instance = new Database("localhost", 3050, "SYSDBA", "masterkey");
+			instance = new Database("localhost", 3050, "myUser", "myPassword");
 		}
 		return instance;
 	}
