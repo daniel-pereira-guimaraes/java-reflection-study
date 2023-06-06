@@ -1,10 +1,10 @@
 
 public class Product {
 	
-	private long id;
+	private Long id;
 	private String name;
-	private double price = 0.0;
-	private boolean active = true;
+	private Double price = 0.0;
+	private Boolean active = true;
 	
 	public Product() {
 		super();
@@ -15,20 +15,20 @@ public class Product {
 		this.name = name;
 	}
 
-	public Product(long id, String name) {
+	public Product(Long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
 
-	public Product(long id, String name, double price) {
+	public Product(Long id, String name, Double price) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
 	}
 
-	public Product(long id, String name, double price, boolean active) {
+	public Product(Long id, String name, Double price, Boolean active) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -36,7 +36,7 @@ public class Product {
 		this.active = active;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -44,15 +44,15 @@ public class Product {
 		return name;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public boolean isActive() {
+	public Boolean isActive() {
 		return active;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -60,11 +60,11 @@ public class Product {
 		this.name = name;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 

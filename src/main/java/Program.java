@@ -24,10 +24,7 @@ public class Program {
 		BLUE
 	}
 	
-	public static void main(String[] args) 
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException, 
-				IllegalArgumentException, InvocationTargetException, NoSuchMethodException, 
-				SecurityException {
+	public static void main(String[] args) throws Throwable {
 		classOfObject();
 		classOfClass();
 		classOfPrimitive();
@@ -41,6 +38,7 @@ public class Program {
 		printConstructorsParamTypes(Product.class);
 		createNewInstance();
 		createInstanceWithArgs();
+		createInstanceWithArgsV2();
 		usePrivateConstructor();
 	}
 	
@@ -254,15 +252,14 @@ public class Program {
     	}
     }
 
-    private static void createNewInstance() throws InstantiationException, IllegalAccessException {
+    private static void createNewInstance()  throws Throwable {
     	System.out.println("\ncreateNewInstance");
     	final Product p = Product.class.newInstance();
     	System.out.println("\t" + p);
     }
     
 	@SuppressWarnings("unchecked")
-	private static <T> T createInstanceWithArgs(Class<T> clazz, Object... args) 
-    		throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	private static <T> T createInstanceWithArgs(Class<T> clazz, Object... args) throws Throwable {
     	System.out.println("\tcreateInstanceWithArgs(" + clazz.getSimpleName() + ".class, " + Arrays.asList(args) + ")");
     	for (Constructor<?> c : clazz.getDeclaredConstructors()) {
     		if (c.getParameterCount() == args.length) {
@@ -273,9 +270,7 @@ public class Program {
     	return null;
     }
 
-    private static void createInstanceWithArgs() 
-    		throws InstantiationException, IllegalAccessException, 
-    			IllegalArgumentException, InvocationTargetException {
+    private static void createInstanceWithArgs()  throws Throwable {
     	
     	System.out.println("\ncreateInstanceWithArgs");
     	
@@ -288,6 +283,25 @@ public class Program {
     	System.out.println("\t" + p2);
     	System.out.println("\t" + p3);
     }
+    
+	@SuppressWarnings("unchecked")
+	private static <T> T createInstanceWithArgsV2(Class<T> clazz, Object... args) throws Throwable {
+    	final Class<?>[] paramTypes = Arrays.stream(args).map(Object::getClass).toArray(Class[]::new);
+    	final Constructor<?> constructor = clazz.getConstructor(paramTypes);
+    	return (T) constructor.newInstance(args);
+    }
+	
+	private static void createInstanceWithArgsV2() throws Throwable {
+		System.out.println("\ncreateInstanceWithArgsV2");
+		
+		final Product p1 = createInstanceWithArgsV2(Product.class, "Keyboard");
+		final Product p2 = createInstanceWithArgsV2(Product.class, 5L, "Keyboard");
+		final Product p3 = createInstanceWithArgsV2(Product.class, 5L, "Keyboard", 50.0);
+		
+		System.out.println("\t" + p1);
+		System.out.println("\t" + p2);
+		System.out.println("\t" + p3);
+	}
     
     private static void usePrivateConstructor() 
     		throws NoSuchMethodException, SecurityException, InstantiationException, 
