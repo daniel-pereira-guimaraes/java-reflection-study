@@ -1,3 +1,4 @@
+package main;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -97,7 +98,7 @@ public class Program {
 	private static void innerClassByName() throws ClassNotFoundException {
 		System.out.println(Program.class.getSimpleName() + ".innerClassByName()");
 		
-		Class<?> personClass = Class.forName("Program$Person");
+		Class<?> personClass = Class.forName("main.Program$Person");
 		
 		System.out.println("\tpersonClass:\t" + personClass);
 		System.out.println();
