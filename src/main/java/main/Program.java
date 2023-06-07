@@ -48,6 +48,7 @@ public class Program {
 		usePrivateConstructor();
 		testGetArrayClass();
 		printClassFields();
+		printFieldsWithValues();
 	}
 	
 	private static void classOfObject() {
@@ -396,6 +397,30 @@ public class Program {
     	printClassFields(Movie.class);
     	printClassFields(Movie.Category.class);
     	
+    }
+    
+    private static <T> void printFieldsWithValues(int level, String caption, 
+    		Field[] fields, T instance) throws Throwable {
+    	System.out.println(repeat('\t', level++) + caption + ": " + fields.length);
+    	final String prefix = repeat('\t', level);
+    	for (Field field : fields) {
+    		field.setAccessible(true);
+    		System.out.println(prefix + field.getName() + " = " + field.get(instance));
+    	}
+    }
+    
+    private static <T> void printFieldsWithValues(Class<? extends T> clazz, T instance) throws Throwable {
+    	System.out.println("\nprintFieldsWithValues");
+    	printFieldsWithValues(1, "Fields", clazz.getFields(), instance);
+    	printFieldsWithValues(1, "DeclaredFields", clazz.getDeclaredFields(), instance);
+    }
+    
+    private static void printFieldsWithValues() throws Throwable {
+    	final Movie movie = new Movie();
+    	movie.setId(10L);
+    	movie.setName("Ice Age");
+    	printFieldsWithValues(Product.class, movie);
+    	printFieldsWithValues(Movie.class, movie);
     }
     
 }
