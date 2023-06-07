@@ -375,8 +375,13 @@ public class Program {
     
     private static void printFields(int level, String caption, Field[] fields) {
     	System.out.println(repeat('\t', level++) + caption + ": " + fields.length);
+    	final String namePrefix = repeat('\t', level);
+    	final String propPrefix = repeat('\t', level + 1);
     	for (Field field : fields) {
-    		System.out.println(repeat('\t', level) + field.getName());
+    		System.out.println(namePrefix + field.getName());
+    		System.out.println(propPrefix + "Type: " + field.getType().getSimpleName());
+    		System.out.println(propPrefix + "Synthetic: " + field.isSynthetic());
+    		System.out.println(propPrefix + "Accessible: " + field.isAccessible());
     	}
     }
 
@@ -389,6 +394,8 @@ public class Program {
     private static void printClassFields() {
     	printClassFields(Product.class);
     	printClassFields(Movie.class);
+    	printClassFields(Movie.Category.class);
+    	
     }
     
 }

@@ -13,7 +13,7 @@ public class Movie extends Product {
 	}
 	
 	private static double MIN_MINUTES = 5;
-	public static int HORROR_MINIMUM_AGE = 18;
+	public static int HORROR_MIN_AGE = 18;
 	
 	private Category category;
 	private Integer minutes;
