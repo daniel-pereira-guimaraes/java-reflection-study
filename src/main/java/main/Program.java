@@ -1,9 +1,9 @@
 package main;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import dao.Database;
+import model.Movie;
 import model.Product;
 
 public class Program {
@@ -46,6 +47,7 @@ public class Program {
 		createInstanceWithArgsV2();
 		usePrivateConstructor();
 		testGetArrayClass();
+		printClassFields();
 	}
 	
 	private static void classOfObject() {
@@ -363,5 +365,30 @@ public class Program {
     	System.out.println("\t" + getArrayClass(Product.class).getTypeName()); 
     	System.out.println("\t" + getArrayClass(Object.class).getTypeName()); 
     }
-	
+    
+    private static String repeat(char c, int n) {
+    	final StringBuilder sb = new StringBuilder();
+    	for (int i = 0; i < n; i++)
+    		sb.append(c);
+    	return sb.toString();
+    }
+    
+    private static void printFields(int level, String caption, Field[] fields) {
+    	System.out.println(repeat('\t', level++) + caption + ": " + fields.length);
+    	for (Field field : fields) {
+    		System.out.println(repeat('\t', level) + field.getName());
+    	}
+    }
+
+    private static void printClassFields(Class<?> clazz) {
+    	System.out.println("\nprintClassFields: " + clazz.getSimpleName());
+    	printFields(1, "Fields", clazz.getFields());
+    	printFields(1, "DeclaredFields", clazz.getDeclaredFields());
+    }
+
+    private static void printClassFields() {
+    	printClassFields(Product.class);
+    	printClassFields(Movie.class);
+    }
+    
 }
