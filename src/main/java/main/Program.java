@@ -49,6 +49,7 @@ public class Program {
 		testGetArrayClass();
 		printClassFields();
 		printFieldsWithValues();
+		accessFieldByName();
 	}
 	
 	private static void classOfObject() {
@@ -421,6 +422,23 @@ public class Program {
     	movie.setName("Ice Age");
     	printFieldsWithValues(Product.class, movie);
     	printFieldsWithValues(Movie.class, movie);
+    }
+    
+    private static void accessFieldByName() throws Throwable {
+    	System.out.println("\naccessFieldByName");
+
+    	final Movie movie = new Movie();
+    	movie.setName("Ice Age");
+    	
+    	final Field field = Product.class.getDeclaredField("name");
+    	field.setAccessible(true);
+    	
+    	final String value = (String) field.get(movie);
+    	System.out.println("\tfield.get(movie): " + value);
+    	
+    	System.out.println("\tSetting new value...");
+    	field.set(movie, "Lion King");
+    	System.out.println("\tmovie.getName(): " + movie.getName());
     }
     
 }
