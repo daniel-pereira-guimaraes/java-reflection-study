@@ -54,6 +54,7 @@ public class Program {
 		accessFieldByName();
 		fieldClassValueByName();
 		inspectArrayObject();
+		getArrayElement();
 	}
 	
 	private static void classOfObject() {
@@ -506,6 +507,26 @@ public class Program {
     	inspectArrayObject("Hello!");
     	inspectArrayObject(oneDimensionalArray);
     	inspectArrayObject(twoDimensionalArray);
+    }
+    
+    private static Object getArrayElement(Object array, int index) {
+    	if (array == null) {
+    		throw new IllegalArgumentException("The array argument cannot be null.");
+    	}
+    	final int len = Array.getLength(array);
+    	if (len == 0) {
+    		throw new IllegalArgumentException("The array argument cannot be empty.");
+    	}
+    	index = index >= 0 ? index = index % len : (index + 1) % len + len - 1;
+    	return Array.get(array, index);
+    }
+    
+    private static void getArrayElement() {
+    	final int[] test = {0, 1, 2, 3, 4};
+
+    	for (int i = 0; i < 12; i++) {
+    		System.out.println(getArrayElement(test, i));
+    	}
     }
     
 }

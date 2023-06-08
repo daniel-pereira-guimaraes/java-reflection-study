@@ -86,7 +86,10 @@ public class Main {
 				sb.append(formatValue(element, elementType, indentSize));
 			}
 			if (i < len - 1) {
-				sb.append(',').append(multiLines ? '\n' : ' ');
+				sb.append(',');
+				if (multiLines) {
+					sb.append('\n');
+				}
 			}
 		}
 		if (multiLines) {
@@ -98,7 +101,7 @@ public class Main {
 	}
 
 	private static boolean isSingleLine(Class<?> objectType) {
-		return objectType.isPrimitive() || objectType.isArray() || objectType.equals(String.class);
+		return objectType.isPrimitive() || objectType.isArray();
 	}
 
 	private static String formatValue(Object value, Class<?> valueType, int indentSize) throws Throwable {
