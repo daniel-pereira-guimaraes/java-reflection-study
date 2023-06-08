@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import dao.Database;
+import model.Employee;
 import model.Movie;
 import model.Product;
 
@@ -47,7 +48,7 @@ public class Program {
 		createInstanceWithArgsV2();
 		usePrivateConstructor();
 		testGetArrayClass();
-		printClassFields();
+		printFields();
 		printFieldsWithValues();
 		accessFieldByName();
 		fieldClassValueByName();
@@ -388,17 +389,17 @@ public class Program {
     	}
     }
 
-    private static void printClassFields(Class<?> clazz) {
+    private static void printFields(Class<?> clazz) {
     	System.out.println("\nprintClassFields: " + clazz.getSimpleName());
     	printFields(1, "Fields", clazz.getFields());
     	printFields(1, "DeclaredFields", clazz.getDeclaredFields());
     }
 
-    private static void printClassFields() {
-    	printClassFields(Product.class);
-    	printClassFields(Movie.class);
-    	printClassFields(Movie.Category.class);
-    	
+    private static void printFields() throws ClassNotFoundException {
+    	printFields(Product.class);
+    	printFields(Movie.class);
+    	printFields(Movie.Category.class);
+    	printFields(Employee.Builder.EmployeeImpl.class);
     }
     
     private static <T> void printFieldsWithValues(int level, String caption, 
