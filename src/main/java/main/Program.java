@@ -1,5 +1,6 @@
 package main;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -53,7 +54,7 @@ public class Program {
 		printFieldsWithValues();
 		accessFieldByName();
 		fieldClassValueByName();
-		inspectArray();
+		inspectArrayObject();
 	}
 	
 	private static void classOfObject() {
@@ -462,19 +463,42 @@ public class Program {
     	final String FIELD_NAME = "MIN_MINUTES";
     	System.out.println("\t" + FIELD_NAME + ": " + fieldClassValueByName(Movie.class, FIELD_NAME));
     }
+
+    private static String arrayToString(Object arrayObject) {
+    	if (arrayObject == null || !arrayObject.getClass().isArray()) {
+    		throw new IllegalArgumentException("arrayObject argument isn't an array.");
+    	}
+    	final StringBuilder sb = new StringBuilder();
+    	sb.append('[');
+    	final int len = Array.getLength(arrayObject);
+    	for (int i = 0; i < len; i++) {
+    		final Object element = Array.get(arrayObject, i);
+    		if (element.getClass().isArray()) {
+    			sb.append(arrayToString(element));
+    		}
+    		else {
+    			sb.append(element);
+    		}
+    		if (i < len - 1) {
+    			sb.append(',').append(' ');
+    		}
+    	}
+    	return sb.append(']').toString();
+    }
     
-    private static void inspectArrayObject(Object object) {
-    	final Class<?> clazz = object.getClass();
+    private static void inspectArrayObject(Object arrayObject) {
+    	final Class<?> clazz = arrayObject.getClass();
     	if (clazz.isArray()) {
     		final Class<?> arrayComponentType = clazz.getComponentType();
     		System.out.println("\tThe object is an array of " + arrayComponentType.getSimpleName());
+    		System.out.println("\t\t" + arrayToString(arrayObject));
     	}
     	else {
     		System.out.println("\tThe object isn't an array. It's " + clazz.getTypeName() + ".");
     	}
     }
 
-    private static void inspectArray() {
+    private static void inspectArrayObject() {
     	System.out.println("\ninspectArrayObject");
 
     	final int [] oneDimensionalArray = {1, 2};
