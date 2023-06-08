@@ -2,6 +2,9 @@ package jsonwriter;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import model.Address;
 import model.Company;
@@ -13,14 +16,13 @@ public class Main {
 
 		final Address companyAddress = new Address("Here", (short) 123);
 		final String[] companyOtherNames = { "Java Cia", "Java Company" };
-		final Company company = new Company("Java S/A", "São Paulo", companyAddress, companyOtherNames);
+		final Company company = new Company(100L, "Java S/A", "São Paulo", companyAddress, companyOtherNames);
 
 		final Address personAddress = new Address("Example", (short) 456);
 		final Address[] personAddresses = {personAddress, companyAddress};
-		final Person person = new Person("Emma", true, 21, 5000.126f, personAddresses, company);
+		final Person person = new Person(200L, "Emma", true, 21, 5000.126f, personAddresses, company);
 
 		System.out.println(objectToJson(person));
-
 	}
 
 	public static String objectToJson(Object instance) throws Throwable {
@@ -29,20 +31,27 @@ public class Main {
 
 	private static String objectToJson(Object instance, int indentSize) throws Throwable {
 
-		final Field[] fields = instance.getClass().getDeclaredFields();
 		final StringBuilder sb = new StringBuilder();
 		final String objectIndent = indent(indentSize);
 		final String fieldIndent = objectIndent + indent(1);
+		final List<Field> fields = new ArrayList<>();
 
+		Class<?> superClass = instance.getClass().getSuperclass();
+		while (superClass != null) {
+			fields.addAll(0, Arrays.asList(superClass.getDeclaredFields()));
+			superClass = superClass.getSuperclass();
+		}
+		fields.addAll(Arrays.asList(instance.getClass().getDeclaredFields()));
+		
 		sb.append('{').append('\n');
-		for (int i = 0; i < fields.length; i++) {
-			final Field field = fields[i];
+		for (int i = 0; i < fields.size(); i++) {
+			final Field field = fields.get(i);
 			field.setAccessible(true);
 			if (!field.isSynthetic()) {
 				sb.append(fieldIndent);
 				sb.append(formatStringValue(field.getName())).append(':');
 				sb.append(formatValue(field.get(instance), field.getType(), indentSize));
-				if (i < fields.length - 1) {
+				if (i < fields.size() - 1) {
 					sb.append(',');
 				}
 				sb.append('\n');

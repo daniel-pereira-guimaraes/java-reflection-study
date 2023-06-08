@@ -1,8 +1,7 @@
 package model;
 
-public class Company {
+public class Company extends BasicPerson {
 	
-	private final String name;
 	private final String city;
 	private final Address address;
 	private final String[] otherNames;
@@ -11,16 +10,11 @@ public class Company {
 		return otherNames;
 	}
 
-	public Company(String name, String city, Address address, String[] otherNames) {
-		super();
-		this.name = name;
+	public Company(Long id, String name, String city, Address address, String[] otherNames) {
+		super(id, name);
 		this.city = city;
 		this.address = address;
 		this.otherNames = otherNames;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public String getCity() {
