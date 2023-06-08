@@ -50,6 +50,7 @@ public class Program {
 		printClassFields();
 		printFieldsWithValues();
 		accessFieldByName();
+		fieldClassValueByName();
 	}
 	
 	private static void classOfObject() {
@@ -439,6 +440,23 @@ public class Program {
     	System.out.println("\tSetting new value...");
     	field.set(movie, "Lion King");
     	System.out.println("\tmovie.getName(): " + movie.getName());
+    }
+    
+    @SuppressWarnings("unchecked")
+	private static <T> T fieldClassValueByName(Class<?> clazz, String fieldName) {
+    	try {
+    		final Field field = clazz.getDeclaredField(fieldName);
+    		field.setAccessible(true);
+    		return (T) field.get(null);
+    	}
+    	catch (Throwable e) {
+			return null;
+		}
+    }
+    private static void fieldClassValueByName() {
+    	System.out.println("\nshowFieldClassValueByName");
+    	final String FIELD_NAME = "MIN_MINUTES";
+    	System.out.println("\t" + FIELD_NAME + ": " + fieldClassValueByName(Movie.class, FIELD_NAME));
     }
     
 }
