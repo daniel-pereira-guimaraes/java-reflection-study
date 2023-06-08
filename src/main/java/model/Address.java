@@ -10,5 +10,15 @@ public class Address {
 		this.street = street;
 		this.number = number;
 	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public short getNumber() {
+		return number;
+	}
+	
+	
 	
 }

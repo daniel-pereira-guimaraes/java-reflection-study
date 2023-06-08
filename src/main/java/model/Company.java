@@ -13,4 +13,16 @@ public class Company {
 		this.address = address;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
 }

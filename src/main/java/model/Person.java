@@ -19,4 +19,28 @@ public class Person {
 		this.job = job;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public boolean isEmployed() {
+		return employed;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public float getSalary() {
+		return salary;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public Company getJob() {
+		return job;
+	}
+
 }
