@@ -7,6 +7,10 @@ public class Company {
 	private final Address address;
 	private final String[] otherNames;
 	
+	public String[] getOtherNames() {
+		return otherNames;
+	}
+
 	public Company(String name, String city, Address address, String[] otherNames) {
 		super();
 		this.name = name;
