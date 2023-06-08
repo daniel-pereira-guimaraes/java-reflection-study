@@ -522,11 +522,13 @@ public class Program {
     }
     
     private static void getArrayElement() {
-    	final int[] test = {0, 1, 2, 3, 4};
-
-    	for (int i = 0; i < 12; i++) {
-    		System.out.println(getArrayElement(test, i));
+    	System.out.println("\ngetArrayElement");
+    	System.out.print("\t");
+    	final int[] test = {1, 2, 3, 4, 5};
+    	for (int i = -10; i < 10; i++) {
+    		System.out.print(getArrayElement(test, i) + "  ");
     	}
+    	System.out.println();
     }
     
 }
