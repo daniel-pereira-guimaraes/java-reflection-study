@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,7 @@ public class Program {
 		printFieldsWithValues();
 		accessFieldByName();
 		fieldClassValueByName();
+		inspectArray();
 	}
 	
 	private static void classOfObject() {
@@ -454,10 +456,33 @@ public class Program {
 			return null;
 		}
     }
+    
     private static void fieldClassValueByName() {
     	System.out.println("\nshowFieldClassValueByName");
     	final String FIELD_NAME = "MIN_MINUTES";
     	System.out.println("\t" + FIELD_NAME + ": " + fieldClassValueByName(Movie.class, FIELD_NAME));
+    }
+    
+    private static void inspectArrayObject(Object object) {
+    	final Class<?> clazz = object.getClass();
+    	if (clazz.isArray()) {
+    		final Class<?> arrayComponentType = clazz.getComponentType();
+    		System.out.println("\tThe object is an array of " + arrayComponentType.getSimpleName());
+    	}
+    	else {
+    		System.out.println("\tThe object isn't an array. It's " + clazz.getTypeName() + ".");
+    	}
+    }
+
+    private static void inspectArray() {
+    	System.out.println("\ninspectArrayObject");
+
+    	final int [] oneDimensionalArray = {1, 2};
+    	final double [][] twoDimensionalArray = {{5.2, 6.5}, {7.1, 8.35}};
+
+    	inspectArrayObject("Hello!");
+    	inspectArrayObject(oneDimensionalArray);
+    	inspectArrayObject(twoDimensionalArray);
     }
     
 }
