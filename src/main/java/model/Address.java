@@ -4,6 +4,7 @@ public class Address {
 
 	private final String street;
 	private final short number;
+	private int[][] onlyTest = {{1, 3, 4}, {5, 6}};
 	
 	public Address(String street, short number) {
 		super();

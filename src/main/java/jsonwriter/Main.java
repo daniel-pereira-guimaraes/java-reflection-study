@@ -1,103 +1,132 @@
 package jsonwriter;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
 
 import model.Address;
 import model.Company;
 import model.Person;
 
 public class Main {
-	
-	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-	
+
 	public static void main(String[] args) throws Throwable {
-		
+
 		final Address companyAddress = new Address("Here", (short) 123);
-		final Company company = new Company("Java S/A", "São Paulo", companyAddress);
+		final String[] companyOtherNames = { "Java Cia", "Java Company" };
+		final Company company = new Company("Java S/A", "São Paulo", companyAddress, companyOtherNames);
 
 		final Address personAddress = new Address("Example", (short) 456);
-		final Person person = new Person("Emma", true, 21, 5000.126f, personAddress, company);
-		
+		final Address[] personAddresses = {personAddress, companyAddress};
+		final Person person = new Person("Emma", true, 21, 5000.126f, personAddresses, company);
+
 		System.out.println(objectToJson(person));
-		
+
 	}
 
 	public static String objectToJson(Object instance) throws Throwable {
 		return objectToJson(instance, 0);
 	}
-	
+
 	private static String objectToJson(Object instance, int indentSize) throws Throwable {
+
 		final Field[] fields = instance.getClass().getDeclaredFields();
 		final StringBuilder sb = new StringBuilder();
-		
+		final String objectIndent = indent(indentSize);
+		final String fieldIndent = objectIndent + indent(1);
+
 		sb.append('{').append('\n');
-		
 		for (int i = 0; i < fields.length; i++) {
-			
 			final Field field = fields[i];
 			field.setAccessible(true);
-			
-			if (field.isSynthetic()) {
-				continue;
-			}
-			
-			sb.append(indent(indentSize + 1));
-			sb.append(formatStringValue(field.getName())).append(':');
-			if (field.getType().isPrimitive()) {
-				sb.append(formatPrimitiveValue(field, instance));
-			}
-			else {
-				final Object value = field.get(instance);
-				if (value == null) {
-					sb.append("null");
-				} 
-				else if (field.getType().equals(String.class)) {
-					sb.append(formatStringValue(value.toString()));
+			if (!field.isSynthetic()) {
+				sb.append(fieldIndent);
+				sb.append(formatStringValue(field.getName())).append(':');
+				sb.append(formatValue(field.get(instance), field.getType(), indentSize));
+				if (i < fields.length - 1) {
+					sb.append(',');
 				}
-				else {
-					sb.append(objectToJson(value, indentSize + 1));
-				}
+				sb.append('\n');
 			}
-
-			if (i < fields.length - 1) {
-				sb.append(',');
-			}
-			
-			sb.append('\n');
 		}
-		
-		sb.append(indent(indentSize)).append('}');
-		
+		sb.append(objectIndent).append('}');
+
 		return sb.toString();
 	}
-	
+
 	private static String indent(int identSize) {
 		final StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < identSize; i++) {
-			sb.append("\t");
+			sb.append('\t');
 		}
 		return sb.toString();
 	}
-	
-	private static String formatPrimitiveValue(Field field, Object parentInstance) throws Throwable {
-		if (field.getType().equals(boolean.class)
-			|| field.getType().equals(int.class)
-			|| field.getType().equals(long.class)
-			|| field.getType().equals(short.class)) {
-			return field.get(parentInstance).toString();
+
+	private static String formatArrayValue(Object arrayObject, 
+			Class<?> elementType, int indentSize) throws Throwable {
+
+		final StringBuilder sb = new StringBuilder();
+		final boolean multiLines = !isSingleLine(elementType);
+		final String arrayIndent = indent(indentSize);
+		final String elementIndent = arrayIndent + indent(1);
+		final int len = Array.getLength(arrayObject);
+
+		sb.append('[');
+		if (multiLines) {
+			sb.append('\n');
 		}
-		else if (field.getType().equals(double.class) 
-				|| field.getType().equals(float.class)) {
-			return DECIMAL_FORMAT.format(field.get(parentInstance));
+		for (int i = 0; i < len; i++) {
+			final Object element = Array.get(arrayObject, i);
+			final Class<?> elementClass = element.getClass();
+			if (elementClass.isArray()) {
+				sb.append(formatArrayValue(element, elementClass.getComponentType(), indentSize + 1));
+			} else {
+				if (multiLines) {
+					sb.append(elementIndent);
+				}
+				sb.append(formatValue(element, elementType, indentSize));
+			}
+			if (i < len - 1) {
+				sb.append(',').append(multiLines ? '\n' : ' ');
+			}
 		}
-		throw new RuntimeException(String.format("Type '%s' is not supported.", field.getType().getName()));	
+		if (multiLines) {
+			sb.append('\n').append(arrayIndent);
+		}
+		sb.append(']');
+
+		return sb.toString();
 	}
-	
-	private static String formatStringValue(String value) {
-		return String.format("\"%s\"", value);
+
+	private static boolean isSingleLine(Class<?> objectType) {
+		return objectType.isPrimitive() || objectType.isArray() || objectType.equals(String.class);
+	}
+
+	private static String formatValue(Object value, Class<?> valueType, int indentSize) throws Throwable {
+
+		if (value == null) {
+			return "null";
+		}
+
+		if (valueType.equals(String.class)) {
+			return formatStringValue(value.toString());
+		}
+
+		if (valueType.isPrimitive()) {
+			return value.toString();
+		}
+
+		if (valueType.isArray()) {
+			return formatArrayValue(value, valueType.getComponentType(), indentSize + 1);
+		}
+
+		return objectToJson(value, indentSize + 1);
+	}
+
+	private static String formatStringValue(Object value) {
+		return new StringBuilder()
+				.append('"')
+				.append(value.toString().replace("\"", "\\\""))
+				.append('"').toString();
 	}
 
 }
