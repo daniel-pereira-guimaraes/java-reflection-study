@@ -1,6 +1,6 @@
 package configloader;
 
-public class Main {
+public class ConfigLoaderTest {
 	
 	private static final String CONFIG_PATH = "database.cfg";
 	

@@ -1,4 +1,4 @@
-package model;
+package jsonwriter;
 
 public class Company extends BasicPerson {
 	
