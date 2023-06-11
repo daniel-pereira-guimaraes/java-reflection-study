@@ -4,7 +4,10 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -57,6 +60,8 @@ public class Program {
 		getArrayElement();
 		arrayNewInstance();
 		listToArray();
+		arrayConcat();
+		analyzeMethods();
 	}
 	
 	private static void classOfObject() {
@@ -570,5 +575,128 @@ public class Program {
 			System.out.println(n);
 		}
 	}
+	
+	private static <T> T arrayConcat(Class<?> type, Object... arguments) {
+		
+		if (arguments.length == 0) {
+			return null;
+		}
+
+		final List<Object> list = new ArrayList<>();
+		for (final Object arg : arguments) {
+			if (arg.getClass().isArray()) {
+				final int argLength = Array.getLength(arg);
+				for (int i = 0; i < argLength; i++) {
+					list.add(Array.get(arg, i));
+				}
+			}
+			else {
+				list.add(arg);
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		T result = (T) Array.newInstance(type, list.size());
+		
+		for (int i = 0; i < list.size(); i++) {
+			Array.set(result, i, list.get(i));
+		}
+		
+		return result;
+	}
+
+	private static void arrayConcat() {
+		System.out.println("\narrayConcat");
+		
+		System.out.print("\tintArray1:\t");
+		int[] intArray1 = arrayConcat(int.class, 1, 2, 3, 4, 5);
+		for (int i : intArray1) {
+			System.out.print(" " + i);
+		}
+
+		System.out.print("\n\tintArray2:\t");
+		int[] intArray2 = arrayConcat(int.class, 1, 2, 3, new int[] {4, 5, 6}, 7);
+		for (int i : intArray2) {
+			System.out.print(" " + i);
+		}
+
+		System.out.print("\n\tstrArray:\t");
+		String[] strArray = arrayConcat(String.class, new String[] {"a", "b"}, "c", new String[] {"d", "e"});
+		for (String s : strArray) {
+			System.out.print(" " + s);
+		}
+		
+		System.out.println();
+	}
+	
+	private static void appendParameter(StringBuilder sb, Parameter parameter, String parameterName) {
+		sb.append(parameter.getType().getSimpleName()).append(' ').append(parameterName);
+	}
+	
+	private static void appendParameters(StringBuilder sb, Parameter[] parameters) {
+		final int parameterCount = parameters.length;
+		for (int i = 0; i < parameterCount; i++) {
+			appendParameter(sb, parameters[i], "arg" + i);
+			if (i < parameterCount - 1) {
+				sb.append(',').append(' ');
+			}
+		}
+	}
+
+	private static void appendThrows(StringBuilder sb, Class<?>[] exceptionTypes) {
+		if (exceptionTypes.length > 0) {
+			sb.append(" throws ");
+			final int len = exceptionTypes.length;
+			for (int i = 0; i < len; i++) {
+				sb.append(exceptionTypes[i].getSimpleName());
+				if (i < len - 1) {
+					sb.append(',').append(' ');
+				}
+			}
+		}
+	}
+	
+	private static void appendMethod(StringBuilder sb, Method method) {
+		final String modifiers = Modifier.toString(method.getModifiers());
+		if (modifiers != null && !modifiers.isEmpty()) {
+			sb.append(modifiers).append(' ');
+		}
+		sb.append(method.getReturnType().getSimpleName()).append(' ');
+		sb.append(method.getName()).append('(');
+		appendParameters(sb, method.getParameters());
+		sb.append(')');
+		appendThrows(sb, method.getExceptionTypes());
+		sb.append(';');
+	}
+	
+	private static int visibility(int modifiers) {
+		if (Modifier.isPrivate(modifiers)) return 0;
+		if (Modifier.isProtected(modifiers)) return 2;
+		if (Modifier.isPublic(modifiers)) return 3;
+		return 1; // Default
+	}
+	
+	private static void analyzeMethods(Class<?> clazz) {
+		System.out.println("\nanalyzeMethods");
+		System.out.println("\t" + clazz.getSimpleName());
+		
+		final List<Method> methods = Arrays.asList(clazz.getDeclaredMethods());
+		
+		// Sort by member visibility
+		methods.sort((a, b) -> visibility(a.getModifiers()) - visibility(b.getModifiers()));
+
+		final StringBuilder sb = new StringBuilder();
+		for (Method method : methods) {
+			sb.append('\t').append('\t');
+			appendMethod(sb, method);
+			sb.append('\n');
+		}
+		System.out.println(sb.toString());
+	}
+	
+	private static void analyzeMethods() {
+		analyzeMethods(String.class);
+	}
+	
 	
 }
