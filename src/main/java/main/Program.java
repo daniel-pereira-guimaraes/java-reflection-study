@@ -55,6 +55,7 @@ public class Program {
 		fieldClassValueByName();
 		inspectArrayObject();
 		getArrayElement();
+		arrayNewInstance();
 	}
 	
 	private static void classOfObject() {
@@ -530,5 +531,18 @@ public class Program {
     	}
     	System.out.println();
     }
+
+	private static void arrayNewInstance() {
+		System.out.println("\ncreateArray");
+
+		final Object myArray = Array.newInstance(int.class, 3);
+		Array.set(myArray, 0, 200);
+		Array.set(myArray, 1, 300);
+		Array.set(myArray, 2, 500);
+		
+		for (int i = 0; i < Array.getLength(myArray); i++) {
+			System.out.println("\t" + i + ": " + Array.get(myArray, i));
+		}
+	}
     
 }
