@@ -9,6 +9,9 @@ public class ConfigLoader {
 	public static <T> T load(Class<T> clazz, String filePath) throws Throwable {
 
 		final T config = clazz.newInstance();
+		// or:
+		//final T config = clazz.getDeclaredConstructor().newInstance();
+		
 		final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		final InputStream inputStream = classLoader.getResourceAsStream(filePath);
 		
@@ -23,6 +26,7 @@ public class ConfigLoader {
 						try {
 							final Field field = clazz.getDeclaredField(name);
 							field.setAccessible(true);
+							System.out.println("Setting " + name + " with " + value);
 							field.set(config, parseValue(field.getType(), value));
 						} catch (Throwable e) {
 							e.printStackTrace();
