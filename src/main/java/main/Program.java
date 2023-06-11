@@ -56,6 +56,7 @@ public class Program {
 		inspectArrayObject();
 		getArrayElement();
 		arrayNewInstance();
+		listToArray();
 	}
 	
 	private static void classOfObject() {
@@ -544,5 +545,30 @@ public class Program {
 			System.out.println("\t" + i + ": " + Array.get(myArray, i));
 		}
 	}
-    
+	
+	private static <T> T[] listToArray(List<T> list) {
+		
+		if (list == null || list.size() == 0) {
+			return null;
+		}
+		
+		final Class<?> elementType = list.get(0).getClass();
+		
+		@SuppressWarnings("unchecked")
+		T[] result = (T[]) Array.newInstance(elementType, list.size());
+		for (int i = 0; i < list.size(); i++) {
+			Array.set(result, i, list.get(i));
+		}
+		
+		return result;
+	}
+
+	private static void listToArray() {
+		final List<Integer> intList = Arrays.asList(new Integer[] {10, 20, 30});
+		Integer[] intArray = listToArray(intList);
+		for (int n : intArray) {
+			System.out.println(n);
+		}
+	}
+	
 }
