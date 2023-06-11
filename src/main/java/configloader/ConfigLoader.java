@@ -1,6 +1,7 @@
 package configloader;
 
-import java.io.InputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.util.Scanner;
 
@@ -8,14 +9,14 @@ public class ConfigLoader {
 	
 	public static <T> T load(Class<T> clazz, String filePath) throws Throwable {
 
-		final T config = clazz.newInstance();
-		// or:
 		//final T config = clazz.getDeclaredConstructor().newInstance();
-		
-		final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		final InputStream inputStream = classLoader.getResourceAsStream(filePath);
-		
-		try (Scanner scanner = new Scanner(inputStream)) {
+		// or:
+		final T config = clazz.newInstance();
+
+		final File file = new File(filePath);
+		System.out.println("Reading config from file:\n\t" + file.getAbsolutePath());
+
+		try (Scanner scanner = new Scanner(new FileInputStream(file))) {
 			while (scanner.hasNextLine()) {
 				final String line = scanner.nextLine().trim();
 				if (!line.startsWith(";")) { // Ignore comment!
