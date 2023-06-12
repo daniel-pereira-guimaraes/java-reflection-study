@@ -1,6 +1,9 @@
 package jsonwriter;
 
-public abstract class EntityWithId {
+import java.io.Serializable;
+
+public abstract class EntityWithId implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	private final long id;
 

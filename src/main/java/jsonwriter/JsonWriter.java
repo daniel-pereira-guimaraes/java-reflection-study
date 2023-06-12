@@ -2,6 +2,7 @@ package jsonwriter;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,16 +30,18 @@ public class JsonWriter {
 		sb.append('{').append('\n');
 		for (int i = 0; i < fields.size(); i++) {
 			final Field field = fields.get(i);
+            final int modifiers = field.getModifiers();
+            if (field.isSynthetic() || Modifier.isStatic(modifiers) || Modifier.isTransient(modifiers)) {
+                continue;
+            }
 			field.setAccessible(true);
-			if (!field.isSynthetic()) {
-				sb.append(fieldIndent);
-				sb.append(formatStringValue(field.getName())).append(':');
-				sb.append(formatValue(field.get(instance), field.getType(), indentSize));
-				if (i < fields.size() - 1) {
-					sb.append(',');
-				}
-				sb.append('\n');
+			sb.append(fieldIndent);
+			sb.append(formatStringValue(field.getName())).append(':');
+			sb.append(formatValue(field.get(instance), field.getType(), indentSize));
+			if (i < fields.size() - 1) {
+				sb.append(',');
 			}
+			sb.append('\n');
 		}
 		sb.append(objectIndent).append('}');
 

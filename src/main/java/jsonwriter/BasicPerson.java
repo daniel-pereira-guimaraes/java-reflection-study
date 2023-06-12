@@ -1,6 +1,7 @@
 package jsonwriter;
 
 public class BasicPerson extends EntityWithId {
+	private static final long serialVersionUID = 1L;
 
 	private final String name;
 
@@ -12,6 +13,5 @@ public class BasicPerson extends EntityWithId {
 	public String getName() {
 		return name;
 	}
-
 	
 }

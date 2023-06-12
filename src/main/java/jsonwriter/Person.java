@@ -7,6 +7,7 @@ public class Person extends BasicPerson {
 	private final float salary;
 	private final Address[] addresses;
 	private final Company job;
+	private final transient int transientForTestField = 10;
 
 
 	public Person(Long id, String name, boolean employed, int age, float salary, Address[] addresses, Company job) {
