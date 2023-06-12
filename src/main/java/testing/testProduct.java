@@ -14,15 +14,15 @@ public class testProduct {
 		System.out.println("\nsetupTest");
 	}
 	
-	private void test() {
+	public void test() {
 		System.out.println("test");
 	}
 	
-	private void testOne() {
+	public void testOne() {
 		System.out.println("testOne");
 	}
 	
-	private void testTwo() {
+	public void testTwo() {
 		System.out.println("testTwo");
 	}
 	
