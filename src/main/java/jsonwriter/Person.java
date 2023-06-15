@@ -1,14 +1,16 @@
 package jsonwriter;
 
 public class Person extends BasicPerson {
-	
+	private static final long serialVersionUID = 1L;
+
 	private final boolean employed;
 	private final int age;
 	private final float salary;
 	private final Address[] addresses;
 	private final Company job;
+	
+	@SuppressWarnings("unused")
 	private final transient int transientForTestField = 10;
-
 
 	public Person(Long id, String name, boolean employed, int age, float salary, Address[] addresses, Company job) {
 		super(id, name);

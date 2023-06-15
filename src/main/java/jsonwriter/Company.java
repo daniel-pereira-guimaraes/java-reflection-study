@@ -1,7 +1,8 @@
 package jsonwriter;
 
 public class Company extends BasicPerson {
-	
+	private static final long serialVersionUID = 1L;
+
 	private final String city;
 	private final Address address;
 	private final String[] otherNames;
