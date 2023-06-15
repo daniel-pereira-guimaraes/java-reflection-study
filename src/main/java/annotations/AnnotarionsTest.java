@@ -3,6 +3,7 @@ package annotations;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ public class AnnotarionsTest {
 	public static void main(String[] args) throws Throwable {
 		invokeLoaders();
 		printCommentAnnotation(Employee.class);
+		testParameterAnnotation(Employee.class);
 	}
 	
 	private static void invokeLoaders() {
@@ -54,6 +56,26 @@ public class AnnotarionsTest {
 			}
 			System.out.println();
 		}
+	}
+	
+	private static void testParameterAnnotation(Class<?> clazz) {
+		System.out.println("\ntestParameterAnnotation");
+		for (Method method : clazz.getDeclaredMethods()) {
+			System.out.print("\t" + method.getName() + "(");
+			final Parameter[] parameters = method.getParameters();
+			for (int p = 0; p < parameters.length; p++) {
+				final Parameter parameter = parameters[p];
+				final Param param = parameter.getAnnotation(Param.class);
+				final String paramType = parameter.getType().getSimpleName();
+				final String paramName = param == null ? "arg" + p : param.name();
+				System.out.print(paramType + " " + paramName);
+				if (p < parameters.length - 1) {
+					System.out.print(", ");
+				}
+			}
+			System.out.println(");");
+		}
+		
 	}
 
 }
