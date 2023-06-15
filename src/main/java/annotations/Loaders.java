@@ -4,16 +4,16 @@ public class Loaders {
 
 	@Loader
 	public void methodOne() {
-		System.out.println("methodOne running...");
+		System.out.println("\tmethodOne running...");
 	}
 	
 	public void methodTwo() {
-		System.out.println("methodTwo running...");
+		System.out.println("\tmethodTwo running...");
 	}
 	
 	@Loader
 	public void methodThree() {
-		System.out.println("methodThree running...");
+		System.out.println("\tmethodThree running...");
 	}
 	
 }
