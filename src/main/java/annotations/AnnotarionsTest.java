@@ -7,12 +7,16 @@ import java.lang.reflect.Parameter;
 import java.util.HashSet;
 import java.util.Set;
 
+import annotations.Annotations.Comment;
+import annotations.Annotations.Role;
+
 public class AnnotarionsTest {
 	
 	public static void main(String[] args) throws Throwable {
 		invokeLoaders();
 		printCommentAnnotation(Employee.class);
 		testParameterAnnotation(Employee.class);
+		checkRoleAnnotation();
 	}
 	
 	private static void invokeLoaders() {
@@ -77,5 +81,18 @@ public class AnnotarionsTest {
 		}
 		
 	}
+	
+	private static void checkRoleAnnotation(Class<?> clazz) {
+		System.out.println("\ncheckRoleAnnotation(" + clazz.getSimpleName() + ")");
+		System.out.println("\t" + clazz.getSimpleName());
+		for (Role role : clazz.getDeclaredAnnotationsByType(Role.class)) {
+			System.out.println("\t\t" + role.value());
+		}
+	}
 
+	private static void checkRoleAnnotation() {
+		checkRoleAnnotation(Employee.class);
+		checkRoleAnnotation(User.class);
+	}
+	
 }

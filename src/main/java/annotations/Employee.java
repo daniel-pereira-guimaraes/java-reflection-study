@@ -2,7 +2,12 @@ package annotations;
 
 import java.time.LocalDate;
 
+import annotations.Annotations.Comment;
+import annotations.Annotations.Role;
+
 @Comment("Employee registration")
+@Role(RoleEnum.ADMIN)
+@Role(RoleEnum.EMPLOYEE)
 public class Employee {
 	
 	@Comment("Unique identification")
