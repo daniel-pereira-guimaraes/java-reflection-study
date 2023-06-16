@@ -10,14 +10,14 @@ public class Annotations {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface Table {
-		String name();
+		String value();
 		String alias() default "";
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.FIELD)
 	public @interface Column {
-		String name() default "";
+		String value();
 		String formula() default "";
 	}
 

@@ -16,7 +16,7 @@ public class QueryBuilder {
 
 		final StringBuilder sb = new StringBuilder("SELECT");
 		
-		String tableName = trim(table.name());
+		String tableName = trim(table.value());
 		if (isEmpty(tableName)) {
 			tableName = entityClass.getSimpleName();
 		}
@@ -34,7 +34,7 @@ public class QueryBuilder {
 				String origin = trim(column.formula());
 				if (isEmpty(origin)) {
 					hasFormula = false;
-					origin = trim(column.name());
+					origin = trim(column.value());
 					if (isEmpty(origin)) {
 						origin = field.getName();
 					}
